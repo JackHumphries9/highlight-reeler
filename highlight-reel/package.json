@@ -12,14 +12,14 @@
 	"repository": {},
 	"license": "UNLICENSED",
 	"dependencies": {
-		"@remotion/cli": "3.3.98",
-		"@remotion/lambda": "^3.3.98",
+		"@remotion/cli": "4.0.7",
+		"@remotion/lambda": "4.0.7",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
-		"remotion": "3.3.98"
+		"remotion": "4.0.7"
 	},
 	"devDependencies": {
-		"@remotion/eslint-config": "3.3.98",
+		"@remotion/eslint-config": "4.0.7",
 		"@types/react": "^18.0.26",
 		"@types/web": "^0.0.86",
 		"eslint": "^8.30.0",
