@@ -13,9 +13,9 @@
 	"dependencies": {
 		"@middy/core": "^3.4.0",
 		"@middy/http-json-body-parser": "^3.4.0",
-		"@remotion/lambda": "4.0.7",
+		"@remotion/lambda": "4.0.21",
 		"aws-sdk": "^2.1391.0",
-		"remotion": "4.0.7"
+		"remotion": "4.0.21"
 	},
 	"devDependencies": {
 		"@serverless/typescript": "^3.0.0",

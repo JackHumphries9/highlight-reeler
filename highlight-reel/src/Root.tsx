@@ -1,36 +1,66 @@
-import {Composition} from 'remotion';
-import {HelloWorld} from './HelloWorld';
-import {Logo} from './HelloWorld/Logo';
-
-// Each <Composition> is an entry in the sidebar!
+import {Composition, delayRender, staticFile, continueRender} from 'remotion';
+import {getVideoMetadata} from '@remotion/media-utils';
+import {Highlights} from './Highlights/Highlights';
+import {ReelerProps} from '../../highlight-types';
+import {ReelerInternalProps, VideoProps} from './types';
 
 export const RemotionRoot: React.FC = () => {
+	const framerate = 30;
+	const initialAnimationDuration = 5;
+
 	return (
 		<>
 			<Composition
-				// You can take the "id" to render a video:
-				// npx remotion render src/index.ts <id> out/video.mp4
-				id="HelloWorld"
-				component={HelloWorld}
-				durationInFrames={150}
-				fps={30}
+				id="Highlights"
+				component={Highlights}
+				durationInFrames={300}
+				fps={framerate}
 				width={1920}
 				height={1080}
-				// You can override these props for each render:
-				// https://www.remotion.dev/docs/parametrized-rendering
 				defaultProps={{
-					titleText: 'Welcome to Remotion',
-					titleColor: 'black',
+					videoUrls: [
+						'https://jackh.club/thewfa/testhighlight/1.mov',
+						'https://jackh.club/thewfa/testhighlight/2.mov',
+					],
+					date: 1689685765,
+					competition: 'Test Competition',
+					homeTeam: 'Home Team FC',
+					awayTeam: 'Away Team FC',
 				}}
-			/>
-			{/* Mount any React component to make it show up in the sidebar and work on it individually! */}
-			<Composition
-				id="OnlyLogo"
-				component={Logo}
-				durationInFrames={150}
-				fps={30}
-				width={1920}
-				height={1080}
+				calculateMetadata={async ({props}) => {
+					const {videoUrls} = props as unknown as ReelerProps;
+
+					let totalLength = initialAnimationDuration;
+
+					const videoMetadata: VideoProps[] = [];
+
+					for (const url of videoUrls) {
+						console.log('Getting metadata for', url);
+						console.log(`Total Length duration: ${totalLength}`);
+						const data = await getVideoMetadata(url);
+
+						totalLength += data.durationInSeconds;
+
+						videoMetadata.push({
+							videoUrl: url,
+							durationFrames: Math.floor(data.durationInSeconds * framerate),
+						});
+					}
+
+					console.log('Total Length duration:', totalLength);
+					console.log(
+						'Total Length frames:',
+						Math.floor(totalLength * framerate)
+					);
+
+					return {
+						durationInFrames: Math.floor(totalLength * framerate),
+						props: {
+							...props,
+							videoProps: videoMetadata,
+						},
+					};
+				}}
 			/>
 		</>
 	);

@@ -4,4 +4,6 @@ export interface ReelerProps {
 	competition: string;
 	homeTeam: string;
 	awayTeam: string;
+	homeLogo?: string;
+	awayLogo?: string;
 }

@@ -1,4 +1,5 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from "@libs/api-gateway";
+import type { ReelerProps } from "../../../../highlight-types";
 import { formatJSONResponse } from "@libs/api-gateway";
 import { middyfy } from "@libs/lambda";
 
@@ -54,11 +55,21 @@ const render: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
 	// Add all the video keys to the array excluding the folder key
 	for (const object of objects.Contents) {
 		if (object.Key != key) {
-			videoKeys.push(object.Key);
+			videoKeys.push(
+				`https://${process.env.MEDIA_BUCKET}.s3.eu-west-2.amazonaws.com/${object.Key}`
+			);
 		}
 	}
 
 	console.log("objects: ", JSON.stringify(objects, null, 2));
+
+	const props: ReelerProps = {
+		videoUrls: videoKeys,
+		date: event.body.date,
+		competition: event.body.competition,
+		homeTeam: event.body.homeTeam,
+		awayTeam: event.body.awayTeam,
+	};
 
 	const video = await renderMediaOnLambda({
 		region: "eu-west-2",
@@ -67,11 +78,7 @@ const render: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
 		functionName: funcs[0].functionName,
 		serveUrl: sites[0].serveUrl,
 		logLevel: "verbose",
-		inputProps: {
-			videoKeys,
-			date: event.body.date,
-			competition: event.body.competition,
-		},
+		inputProps: { ...props },
 	});
 
 	return formatJSONResponse({
