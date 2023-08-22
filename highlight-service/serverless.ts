@@ -10,6 +10,7 @@ const serverlessConfiguration: AWS = {
 	frameworkVersion: "3",
 	plugins: ["serverless-esbuild"],
 	provider: {
+		architecture: "arm64",
 		name: "aws",
 		region: config.region,
 		runtime: "nodejs14.x",
@@ -21,10 +22,6 @@ const serverlessConfiguration: AWS = {
 		environment: {
 			AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
 			NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
-			REMOTION_APP_SERVE_URL:
-				"https://remotionlambda-euwest2-p77mvtx1n0.s3.eu-west-2.amazonaws.com",
-			REMOTION_APP_FUNCTION_NAME:
-				"remotion-render-3-3-98-mem2048mb-disk2048mb-120sec",
 			REMOTION_APP_REGION: config.region,
 			MEDIA_BUCKET: config.mediaBucket,
 		},

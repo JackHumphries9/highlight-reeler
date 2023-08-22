@@ -1,8 +1,8 @@
-import {Composition, delayRender, staticFile, continueRender} from 'remotion';
+import {Composition} from 'remotion';
 import {getVideoMetadata} from '@remotion/media-utils';
 import {Highlights} from './Highlights/Highlights';
 import {ReelerProps} from '../../highlight-types';
-import {ReelerInternalProps, VideoProps} from './types';
+import {VideoProps} from './types';
 
 export const RemotionRoot: React.FC = () => {
 	const framerate = 30;

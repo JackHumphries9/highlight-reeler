@@ -1,5 +1,5 @@
 import React from 'react';
-import {Series, OffthreadVideo} from 'remotion';
+import {OffthreadVideo, Series} from 'remotion';
 import {VideoProps} from '../types';
 
 interface ClipsProps {
@@ -12,10 +12,6 @@ const videoStyle: React.CSSProperties = {
 
 const Clips = (props: any) => {
 	const {videoProps} = props as ClipsProps;
-
-	React.useEffect(() => {
-		console.log(videoProps);
-	}, []);
 
 	return (
 		<Series>

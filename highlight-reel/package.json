@@ -4,7 +4,7 @@
 	"description": "Highlight Reeler for The WFA Matches",
 	"scripts": {
 		"start": "remotion preview",
-		"build": "remotion render HelloWorld out/video.mp4",
+		"build": "remotion render Highlights out/video.mp4",
 		"upgrade": "remotion upgrade",
 		"test": "eslint src --ext ts,tsx,js,jsx && tsc",
 		"upload": "remotion lambda sites create src/index.ts --site-name=highlight-reeler --region eu-west-2"

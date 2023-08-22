@@ -32,16 +32,16 @@ const render: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
 	event
 ) => {
 	const { sites } = await getSites({
-		region: "eu-west-2",
+		region: process.env.AWS_REGION as any,
 	});
 
 	const funcs = await getFunctions({
-		region: "eu-west-2",
+		region: process.env.AWS_REGION as any,
 		compatibleOnly: true,
 	});
 
-	// console.log("funcs: ", JSON.stringify(funcs, null, 2));
-	// console.log("sites: ", JSON.stringify(sites, null, 2));
+	console.log("funcs: ", JSON.stringify(funcs, null, 2));
+	console.log("sites: ", JSON.stringify(sites, null, 2));
 
 	const key = `media/${event.body.s3Folder}/`;
 	let videoKeys: string[] = [];
@@ -71,14 +71,17 @@ const render: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
 		awayTeam: event.body.awayTeam,
 	};
 
+	console.dir(props);
+
 	const video = await renderMediaOnLambda({
-		region: "eu-west-2",
+		region: process.env.AWS_REGION as any,
 		codec: "h264",
 		composition: "Highlights", // Define which composition we want to render
 		functionName: funcs[0].functionName,
 		serveUrl: sites[0].serveUrl,
 		logLevel: "verbose",
-		inputProps: { ...props },
+		inputProps: props as any,
+		framesPerLambda: 900, // Attempted to mitigate the timeout error as each lamdba can render each video
 	});
 
 	return formatJSONResponse({
